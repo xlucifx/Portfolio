@@ -7,9 +7,9 @@ import img2 from "../assets/img2.jpg";
 import img3 from "../assets/img3.png";
 
 const images = [
-  { src: img1, description: "Wyrenderowane w Cinema4D" },
-  { src: img2, description: "Stworzenie własnej marki odzieżowej" },
-  { src: img3, description: "Tworzenie logo w illustratorze" }
+  { src: img1, description: "Portal wymodelowany w Cinema4D i wyrenderowany w Arnoldzie używanym w profesjonalnych produkcjach filmowych" },
+  { src: img2, description: "Stworzenie własnej marki odzieżowej korzystając z Photoshopa oraz stowrzenie strony sklepu połączonej z drukarnią" },
+  { src: img3, description: "Stworzenie mojego logo w illustratorze" }
 ];
 
 export default function Gallery() {
