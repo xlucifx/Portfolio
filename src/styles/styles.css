@@ -1,10 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Stack+Sans+Text:wght@200..700&display=swap');
 
+/* CSS variables for easier control of header/menu/footer heights (mobile first) */
+:root {
+  --site-header-height: 56px;
+  --site-menu-height: 40px;
+  --site-footer-height: 48px;
+  --content-gap: 12px; /* gap between menu and content and between content and footer */
+}
+
 html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  height: 100vh;
+  /* dynamic viewport unit for mobile browser UI compatibility */
+  height: 100dvh;
   width: 100vw;
   background-color: #000000;
   font-family: "Stack Sans Text", sans-serif;
@@ -14,16 +23,20 @@ html, body {
 }
 
 .app-root {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding-top: 8vh;
+  padding-top: 0; /* header and menu are fixed; center area sizing accounts for heights */
   overflow: hidden;
   background-color: #000000;
 }
 
 .center-area {
-  height: 88vh;
+  /* Center area is full viewport height; padding reserves room under header/menu and above footer plus small gaps */
+  height: 100dvh;
+  padding-top: calc(var(--site-header-height) + var(--site-menu-height) + var(--content-gap));
+  padding-bottom: calc(var(--site-footer-height) + var(--content-gap));
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,7 +49,7 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 5vh;
+  height: var(--site-header-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,10 +72,10 @@ html, body {
 
 .site-menu {
   position: fixed;
-  top: 5vh;
+  top: var(--site-header-height);
   left: 0;
   width: 100%;
-  height: 3vh;
+  height: var(--site-menu-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,6 +91,7 @@ html, body {
   color: #e3dac9;
   background: none;
   border: none;
+  padding: 0.4rem 0.6rem;
   cursor: pointer;
   font-family: "Stack Sans Text", sans-serif;
   font-optical-sizing: auto;
@@ -183,7 +197,7 @@ html, body {
 
 .gallery-container {
   background: #000000;
-  height: 85vh;
+  height: 100%;
   width: auto;
   max-width: 85vw;
   min-width: 0;
@@ -191,7 +205,7 @@ html, body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin: 1vh 0;
+  margin: 0; /* remove extra margin; spacing handled by center-area padding */
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(227, 218, 201, 0.15);
   flex-shrink: 0;
@@ -199,6 +213,11 @@ html, body {
   box-sizing: border-box;
   border: 1px solid rgba(227, 218, 201, 0.2);
   position: relative;
+  cursor: grab;
+}
+
+.gallery-container:active {
+  cursor: grabbing;
 }
 
 .gallery-img {
@@ -266,6 +285,22 @@ html, body {
 
 .dots { 
   display: none; 
+}
+
+/* Mobile swipe hint */
+.swipe-hint {
+  display: none;
+  position: absolute;
+  bottom: calc(var(--site-footer-height) + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: #e3dac9;
+  background: rgba(0,0,0,0.6);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  z-index: 8;
+  pointer-events: none;
 }
 
 .about-page {
@@ -400,7 +435,7 @@ html, body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 4vh;
+  height: var(--site-footer-height);
   background-color: #000000;
   text-align: center;
   display: flex;
@@ -449,13 +484,19 @@ html, body {
 }
 
 @media (max-width: 768px) {
+  :root {
+    --site-header-height: 48px;
+    --site-menu-height: 36px;
+    --site-footer-height: 40px;
+    --content-gap: 10px;
+  }
   .gallery-wrapper {
     gap: 0.5rem;
     padding: 0 0.5rem;
   }
   
   .gallery-container {
-    height: 85vh;
+    height: 100%;
     width: auto;
     max-width: 85vw;
     margin: 1vh 0;
@@ -527,7 +568,7 @@ html, body {
   }
   
   .footer {
-    height: 3.5vh;
+    height: var(--site-footer-height);
     font-size: 0.8rem;
   }
 
@@ -551,6 +592,9 @@ html, body {
     gap: 0;
     padding: 0 1rem;
   }
+    .swipe-hint {
+      display: block;
+    }
   
   .gallery-container {
     max-width: 90vw;
@@ -582,13 +626,19 @@ html, body {
 }
 
 @media (max-width: 480px) {
+  :root {
+    --site-header-height: 44px;
+    --site-menu-height: 34px;
+    --site-footer-height: 40px;
+    --content-gap: 8px;
+  }
   .gallery-wrapper {
     gap: 0;
     padding: 0 0.5rem;
   }
   
   .gallery-container {
-    height: 85vh;
+    height: 100%;
     width: auto;
     max-width: 90vw;
   }
@@ -719,5 +769,17 @@ html, body {
   .menu-button {
     font-size: 0.85rem;
     font-weight: 400;
+  }
+
+  /* Touch and gesture improvements for mobile devices */
+  .gallery-container, .gallery-root, .gallery-wrapper {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .gallery-container {
+    touch-action: pan-y;
   }
 }
