@@ -16,6 +16,10 @@ export default function Gallery() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPageLoad, setIsPageLoad] = useState(true);
   const [isImageSwitching, setIsImageSwitching] = useState(false);
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
+  const [hintFadingOut, setHintFadingOut] = useState(false);
+  const hintTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hintFadeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const nextImage = () => {
     if (isImageSwitching) return;
@@ -125,6 +129,37 @@ export default function Gallery() {
 
   useEffect(() => {
     setIsPageLoad(true);
+    // Auto-hide swipe hint after 10 seconds with 2-second fade out
+    const resetHint = () => {
+      setShowSwipeHint(true);
+      setHintFadingOut(false);
+      if (hintTimeoutRef.current) clearTimeout(hintTimeoutRef.current);
+      if (hintFadeTimeoutRef.current) clearTimeout(hintFadeTimeoutRef.current);
+      
+      hintTimeoutRef.current = setTimeout(() => {
+        setHintFadingOut(true);
+        hintFadeTimeoutRef.current = setTimeout(() => {
+          setShowSwipeHint(false);
+        }, 2000);
+      }, 10000);
+    };
+    
+    resetHint();
+    
+    // Reset hint visibility when viewport changes (resize/orientationchange)
+    const handleResize = () => {
+      resetHint();
+    };
+    
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    
+    return () => {
+      if (hintTimeoutRef.current) clearTimeout(hintTimeoutRef.current);
+      if (hintFadeTimeoutRef.current) clearTimeout(hintFadeTimeoutRef.current);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
   }, []);
 
   return (
@@ -176,8 +211,12 @@ export default function Gallery() {
         >
           <ChevronRight size={32} />
         </button>
-        {/* Small mobile hint to indicate swipe navigation */}
-        <div className="swipe-hint">Przesuń palcem, aby przejść</div>
+        {/* Mobile swipe hint with auto-hide and fade out */}
+        {showSwipeHint && (
+          <div className={`swipe-hint ${hintFadingOut ? 'fade-out' : ''}`}>
+            Przesuń palcem, aby przejść
+          </div>
+        )}
       </div>
     </div>
   );
