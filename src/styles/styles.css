@@ -323,8 +323,9 @@ html, body {
   align-items: center;
   justify-content: center;
   background-color: #000000;
-  gap: 0.5rem;
+  gap: var(--content-gap);
   padding: 0 2rem;
+  margin-bottom: var(--content-gap);
 }
 
 .about-photo-container {
@@ -505,6 +506,7 @@ html, body {
   .gallery-wrapper {
     gap: 0.5rem;
     padding: 0 0.5rem;
+    margin-bottom: var(--content-gap);
   }
   
   .gallery-container {
@@ -536,17 +538,20 @@ html, body {
   }
   
   .about-page {
-    gap: 0.5rem;
+    gap: var(--content-gap);
     padding: 0 1rem;
-    justify-content: flex-start;
-    padding-top: 2rem;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: var(--content-gap);
   }
 
   .about-photo-container {
-    height: 180px;
+    height: auto;
     max-width: 90vw;
     width: 100%;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
+    flex: 1 1 auto;
+    min-height: 160px;
   }
 
   .about-content-box {
@@ -555,6 +560,8 @@ html, body {
     border-radius: 12px;
     max-width: 90vw;
     width: 100%;
+    flex: 1 1 auto;
+    min-height: 140px;
   }
   
   .about-content {
@@ -605,10 +612,12 @@ html, body {
   .gallery-wrapper {
     gap: 0;
     padding: 0 0.5rem;
+    margin-bottom: var(--content-gap);
   }
-    .swipe-hint {
-      display: block;
-    }
+  
+  .swipe-hint {
+    display: block;
+  }
   
   .gallery-container {
     max-width: 90vw;
@@ -625,23 +634,29 @@ html, body {
   }
   
   .about-page {
-    gap: 0.5rem;
+    gap: var(--content-gap);
     padding: 0 0.8rem;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: var(--content-gap);
   }
   
   .about-photo-container {
     height: auto;
     max-width: 95vw;
-    max-height: 50vh;
+    flex: 1 1 auto;
+    min-height: 180px;
     width: 100%;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
   }
   
   .about-content-box {
     max-width: 95vw;
     width: 100%;
     padding: 1.2rem;
-    margin-top: 0.5rem;
+    margin-top: 0;
+    flex: 1 1 auto;
+    min-height: 150px;
   }
 }
 
@@ -655,6 +670,7 @@ html, body {
   .gallery-wrapper {
     gap: 0;
     padding: 0 0.5rem;
+    margin-bottom: var(--content-gap);
   }
   
   .gallery-container {
@@ -676,6 +692,7 @@ html, body {
   .about-page {
     gap: 1rem;
     padding: 0 0.5rem;
+    margin-bottom: var(--content-gap);
   }
   
   .about-photo-container {
@@ -738,6 +755,7 @@ html, body {
   .about-page {
     gap: 0.8rem;
     padding: 0 0.3rem;
+    margin-bottom: var(--content-gap);
   }
   
   .about-photo-container {
